@@ -10,15 +10,12 @@ url = "https://www.lds.org/temples/list?lang=eng"
 
 def scrape(url):
     driver = webdriver.Chrome("/Users/danemorgan/chromedriver")
-    htmlElem = "li"
-    xattrb = "[@class ='filterResult-1Hx44']"
-    attrb =  "filterResult-1Hx44"
-    x = "//" + htmlElem + xattrb
-    print x + "test...."
     driver.get(url)
 
     driver.implicitly_wait(5)
-    temples = "/n".join([i.text for i in driver.find_elements_by_xpath('//li[@class="filterResult-1Hx44"]')])    
+    temples = "/n".join([i.text for i in driver.find_elements_by_xpath('//li[@class="filterResult-1Hx44"]')])
+    print temples  
+    driver.close()
 #content = driver.find_elements_by_class_name('filterResult-1Hx44').text_content()
     #print content
 #    xelements =  driver.find_elements_by_xpath(x)
