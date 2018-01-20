@@ -4,34 +4,36 @@
 #import pandas as pd
 
 from selenium import webdriver
-from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 url = "https://www.lds.org/temples/list?lang=eng"
 
 def scrape(url):
     driver = webdriver.Chrome("/Users/danemorgan/chromedriver")
     htmlElem = "li"
-    x = "//" + htmlElem + "*[@class='filterResult-1Hx44']"
-    #print x
-
+    xattrb = "[@class ='filterResult-1Hx44']"
+    attrb =  "filterResult-1Hx44"
+    x = "//" + htmlElem + xattrb
+    print x + "test...."
     driver.get(url)
 
     driver.implicitly_wait(5)
-    element =  driver.find_element_by_xpath(x)
-    print element.text
-    
-    try:
-        for elm in element:
-            print "working..."
-            print element.txt
+    temples = "/n".join([i.text for i in driver.find_elements_by_xpath('//li[@class="filterResult-1Hx44"]')])    
+#content = driver.find_elements_by_class_name('filterResult-1Hx44').text_content()
+    #print content
+#    xelements =  driver.find_elements_by_xpath(x)
+#    elements =  driver.find_elements_by_xpath('//*[@class]')
+#    print xelements
+#     print elements
 
-        driver.quit()
-    except:
-        print "fail"
-        driver.quit()
+#    try:
+#    for ii in content:
+#        content.get_attribute('href')
+#   #         print "for loop here"
+#    #        print ii.get_attribute('class').text()
+#   # except:
+#    #    print "fail"
+#     #   driver.quit()
 
 scrape(url)
 #elem.send_keys()
