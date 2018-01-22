@@ -41,7 +41,7 @@ fileLoc = '/Users/danemorgan/Documents/DataScience/Scraping-Scripts/rawText.csv'
 #https://stackoverflow.com/questions/34091877/how-to-add-header-row-to-a-pandas-dataframe
 #add to make column headers after testing
 #, names = ['Name','Location','Date Dedicated']
-df = pd.read_csv(csvLoc, sep='\n')
+df = pd.read_csv(fileLoc, sep='\n',header=None, names = ['Name','Location','Date'])
 
 '''
 rawTxt = txtFile
