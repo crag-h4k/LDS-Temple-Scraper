@@ -25,3 +25,17 @@ def scrape(url):
     file.close()
 
 scrape(url)
+'''
+import csv
+txtLoc = '/Users/danemorgan/Documents/DataScience/Scraping-Scripts/rawText.txt'
+csvLoc = '/Users/danemorgan/Documents/DataScience/Scraping-Scripts/rawText.csv'
+
+rawTxt = txtFile
+rawCsv = csvFile
+
+in_txt = csv.reader(open(rawTxt, "rb"), delimiter = '\n')
+out_csv = csv.writer(open(rawCsv, 'wb'))
+
+df = pd.read_csv(csvLoc)
+'''
+
