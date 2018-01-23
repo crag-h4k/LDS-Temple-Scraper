@@ -1,53 +1,42 @@
-#js to csv
-#import requests
 import pandas as pd
-import csv
 import unicodedata
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
-#url = input("Which webpage do you want to scrape for data?")
-#filename = input("What do you want to name your data set?")
-url = "https://www.lds.org/temples/list?lang=eng"
 
-#def scrape(url):
+url = "https://www.lds.org/temples/list?lang=eng"
 driver = webdriver.Chrome("/Users/danemorgan/chromedriver")
 
 driver.get(url)
 driver.implicitly_wait(5)
+#pulling out the data by html tag
+nameData = "/n".join([i.text for i in driver.find_elements_by_xpath('//*[@class="templeName-2MBmf"]',)])
+locData = "/n".join([i.text for i in driver.find_elements_by_xpath('//span[@class="templeLocation-27z9P"]')])
+dateData = "/n".join([i.text for i in driver.find_elements_by_xpath('//span[@class="dedicated-2xVdg"]')])
 
-data = "/n".join([i.text for i in driver.find_elements_by_xpath('//li[@class="filterResult-1Hx44"]')])
-data = unicodedata.normalize("NFKD", data).encode("UTF-8")
-#print data 
+#print nameData,locData,dateData
 driver.close()
-
-#comment and uncomment for test
-file = open("rawText.txt","w")
-file.write(data)
-file.close()
-#comment and uncomment for test
-file = open("rawText.csv","w")
-file.write(data)
-file.close()
-
-#scrape(url)
-#txt loc
-#fileLoc = '/Users/danemorgan/Documents/DataScience/Scraping-Scripts/rawText.txt'
-
-#csv loc
-fileLoc = '/Users/danemorgan/Documents/DataScience/Scraping-Scripts/rawText.csv'
-
-#https://stackoverflow.com/questions/34091877/how-to-add-header-row-to-a-pandas-dataframe
-#add to make column headers after testing
-#, names = ['Name','Location','Date Dedicated']
-df = pd.read_csv(fileLoc, sep='\n',header=None, names = ['Name','Location','Date'])
-
-'''
-rawTxt = txtFile
-rawCsv = csvFile
-
-in_txt = csv.reader(open(rawTxt, "rb"), delimiter = '\n')
-out_csv = csv.writer(open(rawCsv, 'wb'))
-'''
-
+#normalize char type
+nameData = unicodedata.normalize("NFKD", nameData).encode("UTF-8")
+locData = unicodedata.normalize("NFKD", locData).encode("UTF-8")
+#split data
+name = nameData.split("/n")
+loc = locData.split("/n")
+date = dateData.split("/n")
+#start making DFs to combine
+DF = pd.DataFrame({"Name":name})
+locDF = pd.DataFrame({"Location":loc})
+dateDF = pd.DataFrame({"Date":date})
+#clean date dataframe
+dateDF = dateDF.shift(1)
+#add dataframes together
+DF["Location"]= locDF
+DF["Date"]= dateDF
+#more cleanup
+DF.loc[182,"Location"]="April 22, 2001"
+DF = DF.drop([0,0])
+#DF
+#DF?
+DF.to_csv("LDS-temples.csv")
+print "DONE!"
