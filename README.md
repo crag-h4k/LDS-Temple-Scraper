@@ -1,4 +1,4 @@
-I wanted ### Context
+### Context
 
 I couldn't find a data set about LDS temples, so I wrote a script to scrape lds.org and save the data as a CSV. Enjoy!
 
